@@ -1,8 +1,8 @@
 module.exports = {
   // your community or team name to display on join page.
-  community: process.env.COMMUNITY_NAME || 'YOUR-TEAM-NAME',
+  community: process.env.COMMUNITY_NAME || 'jointdeveloper',
   // your slack team url (ex: socketio.slack.com)
-  slackUrl: process.env.SLACK_URL || 'YOUR-TEAM.slack.com',
+  slackUrl: process.env.SLACK_URL || 'jointdeveloper.slack.com',
   // access token of slack
   // You can generate it in https://api.slack.com/web#auth
   // You should generate the token in admin user, not owner.
@@ -12,9 +12,10 @@ module.exports = {
   //   curl -X POST 'https://YOUR-SLACK-TEAM.slack.com/api/users.admin.invite' \
   //   --data 'email=EMAIL&token=TOKEN&set_active=true' \
   //   --compressed
-  slacktoken: process.env.SLACK_TOKEN || 'YOUR-ACCESS-TOKEN',
+  slacktoken: process.env.SLACK_TOKEN ||
+    'xoxp-18545223009-153027586451-153788632567-80549ff74c226cde22d47c8ae30fd157',
   // an optional security measure - if it is set, then that token will be required to get invited.
-  inviteToken: process.env.INVITE_TOKEN || null,
+  inviteToken: process.env.INVITE_TOKEN || 'null',
 
-  locale: process.env.LOCALE || "en",
+  locale: process.env.LOCALE || 'es'
 };

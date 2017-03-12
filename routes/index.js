@@ -5,72 +5,89 @@ var config = require('../config');
 
 router.get('/', function(req, res) {
   res.setLocale(config.locale);
-  res.render('index', { community: config.community,
-                        tokenRequired: !!config.inviteToken });
+  res.render('index', {
+    community: config.community,
+    tokenRequired: !!config.inviteToken
+  });
 });
 
 router.post('/invite', function(req, res) {
-  if (req.body.email && (!config.inviteToken || (!!config.inviteToken && req.body.token === config.inviteToken))) {
-    request.post({
-        url: 'https://'+ config.slackUrl + '/api/users.admin.invite',
+  if (
+    req.body.email &&
+    (!config.inviteToken ||
+      (!!config.inviteToken && req.body.token === config.inviteToken))
+  ) {
+    request.post(
+      {
+        url: 'https://' + config.slackUrl + '/api/users.admin.invite',
         form: {
           email: req.body.email,
           token: config.slacktoken,
           set_active: true
         }
-      }, function(err, httpResponse, body) {
+      },
+      function(err, httpResponse, body) {
         // body looks like:
         //   {"ok":true}
         //       or
         //   {"ok":false,"error":"already_invited"}
-        if (err) { return res.send('Error:' + err); }
+        if (err) {
+          return res.send('Error:' + err);
+        }
         body = JSON.parse(body);
         if (body.ok) {
           res.render('result', {
             community: config.community,
-            message: 'Success! Check &ldquo;'+ req.body.email +'&rdquo; for an invite from Slack.'
+            message: `Correcto! Revisa en <i>${req.body.email}</i> una invitación de Slack.`
           });
         } else {
           var error = body.error;
-          if (error === 'already_invited' || error === 'already_in_team') {
+          if (error === 'already_invited') {
             res.render('result', {
               community: config.community,
-              message: 'Success! You were already invited.<br>' +
-                       'Visit <a href="https://'+ config.slackUrl +'">'+ config.community +'</a>'
+              message: `Tienes una invitación pendiente.<br />
+               Revisa en <i>${req.body.email}</i> una invitación de Slack.`
+            });
+            return;
+          } else if (error === 'already_in_team') {
+            res.render('result', {
+              community: config.community,
+              message: `Ya perteneces a nuetro equipo.<br />Visita <a href="https://${config.slackUrl}">Slack ${config.community}</a>. Inicia sesión con <i>${req.body.email}</i>`
             });
             return;
           } else if (error === 'invalid_email') {
-            error = 'The email you entered is an invalid email.';
+            error = 'Correo Electrónico no válido.';
           } else if (error === 'invalid_auth') {
-            error = 'Something has gone wrong. Please contact a system administrator.';
+            error = 'Algo anda mal :(. Por favor contacta al Administrador.';
           }
 
           res.render('result', {
             community: config.community,
-            message: 'Failed! ' + error,
+            message: 'Error! ' + error,
             isFailed: true
           });
         }
-      });
+      }
+    );
   } else {
     var errMsg = [];
     if (!req.body.email) {
-      errMsg.push('your email is required');
+      errMsg.push('Se requiere un Corro Electrónico');
     }
 
     if (!!config.inviteToken) {
       if (!req.body.token) {
-        errMsg.push('valid token is required');
+        errMsg.push('Se requiere la palabra clave');
       }
 
       if (req.body.token && req.body.token !== config.inviteToken) {
-        errMsg.push('the token you entered is wrong');
+        errMsg.push('La palabra clave es incorrecta');
       }
     }
 
     res.render('result', {
       community: config.community,
-      message: 'Failed! ' + errMsg.join(' and ') + '.',
+      message: 'Error! ' + errMsg.join(' and ') + '.',
       isFailed: true
     });
   }

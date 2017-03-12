@@ -3,23 +3,26 @@ html
   head
     meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
+    meta(name="author" content="jointDeveloper")
+    meta(name="author" content="JeongHoon Byun (aka Outsider)")
     title #{__('TITLE', community)}
     link(href="css/style.css", rel="stylesheet", type="text/css")
-    link(href="//fonts.googleapis.com/css?family=Lato:300,400,700,900,700italic|Open+Sans:700italic,400,600,300,700,800", rel="stylesheet", type="text/css")
+    link(href="//fonts.googleapis.com/css?family=Oswald:300|Roboto:300", rel="stylesheet", type="text/css")
   body
     #wrapper
       .main
         .header
-          h1
-            strong #{community}
+          //- h1 
+            //- strong #{community}
+          img(src="images/logo.png" class="img-responsive" style="width: 100%; max-width: 350px;")
           h2 #{__('HEADER', community)}
         .content
           .information
             form(method="POST", action="/invite")#join-form.form
-              input(type="email", name="email", placeholder="#{__('ENTER_EMAIL')}")#slack-email.field
+              input(type="email", name="email", placeholder="#{__('ENTER_EMAIL')}", autocomplete="off")#slack-email.field
               if tokenRequired
-                input(type="text", name="token", placeholder="#{__('ENTER_TOKEN')}")#slack-token.field
-              input(type="submit", value="Join").submit
+                input(type="text", name="token", placeholder="#{__('ENTER_TOKEN')}" autocomplete="off")#slack-token.field
+              input(type="submit", value="Entrar").submit
     script.
       var tokenRequired = #{tokenRequired};
       var form = document.getElementById('join-form');
