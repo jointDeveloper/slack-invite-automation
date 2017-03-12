@@ -6,7 +6,7 @@ var fs = require('fs');
 var envFile = path.join(__dirname, '../.env');
 try {
   fs.accessSync(envFile, fs.F_OK);
-  require('dotenv').config({path: envFile});
+  require('dotenv').config({ path: envFile });
 } catch (e) {
   // no env file
 }
@@ -23,22 +23,21 @@ var http = require('http');
  * @param {int} val
  */
 function normalizePort(val) {
-    var port = parseInt(val, 10);
-    if (isNaN(port)) {
-        return val;
-    } else if (port >= 0) {
-        return port;
-    }
+  var port = parseInt(val, 10);
+  if (isNaN(port)) {
+    return val;
+  } else if (port >= 0) {
+    return port;
+  }
 
-    return false;
+  return false;
 }
-
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '5555');
 app.set('port', port);
 
 /**
