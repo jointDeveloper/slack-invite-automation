@@ -18,7 +18,7 @@ html
           h2 #{__('HEADER', community)}
         .content
           .information
-            form(method="POST", action="/invite")#join-form.form
+            form(method="POST", action="invite")#join-form.form
               input(type="email", name="email", placeholder="#{__('ENTER_EMAIL')}", autocomplete="off")#slack-email.field
               if tokenRequired
                 input(type="text", name="token", placeholder="#{__('ENTER_TOKEN')}" autocomplete="off")#slack-token.field
